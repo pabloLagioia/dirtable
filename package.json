@@ -1,0 +1,27 @@
+{
+  "name": "dirtable",
+  "version": "1.0.0",
+  "description": "Track changes to an object and its properties",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/pabloLagioia/dirtable.git"
+  },
+  "keywords": [
+    "proxy",
+    "dirtable"
+  ],
+  "author": "pablo.lagioia",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pabloLagioia/dirtable/issues"
+  },
+  "homepage": "https://github.com/pabloLagioia/dirtable#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.0.2"
+  }
+}
