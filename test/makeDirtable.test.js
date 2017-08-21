@@ -125,4 +125,14 @@ describe("Dirtable", function() {
 
   });
 
+  it("should not make dirtable another dirtable", function() {
+    
+    var dirtable = makeDirtable(getInspectionOrderMock(), ["attachments", "states"]);
+
+    expect(function() {
+      makeDirtable(dirtable);
+    }).to.not.throw();
+
+  });
+
 });

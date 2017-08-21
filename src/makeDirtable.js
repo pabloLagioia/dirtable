@@ -4,6 +4,10 @@ function canBeDirtable(obj) {
     return false;
   }
 
+  if (obj.isDirtable) {
+    return false;
+  }
+
   if (obj instanceof Array || typeof obj === "object") {
     return true;
   }

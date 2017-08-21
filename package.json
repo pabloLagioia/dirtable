@@ -1,6 +1,6 @@
 {
   "name": "dirtable",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Track changes to an object and its properties",
   "main": "index.js",
   "scripts": {
