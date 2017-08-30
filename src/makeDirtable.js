@@ -34,7 +34,25 @@ function reset() {
 }
 
 function isDirty() {
-  return this._deletions.length + this._assignments.length > 0;
+
+  let isCurrentDirty = this._deletions.length + this._assignments.length > 0;
+
+  if (isCurrentDirty) {
+    return true;
+  }
+
+  for (var j in this) {
+    
+    let it = this[j];
+
+    if (it && it.isDirtable && it.isDirty()) {
+      return true;
+    }
+
+  }
+
+  return false;
+  
 }
 
 function getDeletions() {

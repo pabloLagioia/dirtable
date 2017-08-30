@@ -134,5 +134,17 @@ describe("Dirtable", function() {
     }).to.not.throw();
 
   });
+  
+  it("should return true if an inner object is dirty", function() {
+    
+    var dirtable = makeDirtable(getInspectionOrderMock());
+
+    expect(dirtable.isDirty()).to.equal(false);
+
+    dirtable.states.report = "pending";
+ 
+    expect(dirtable.isDirty()).to.equal(true);
+
+  });
 
 });
