@@ -156,9 +156,11 @@ function makeDirtable(obj, except = []) {
     }
   }
 
-  obj.reset = reset;
-  obj.isDirty = isDirty;
-  obj.getAssignments = getObjectAssignments;
+  var getAssignments = getObjectAssignments;
+  
+  if (isArray) {
+    getAssignments = getArrayAssignments;
+  }
 
   Object.defineProperties(obj, {
     "_deletions": {
@@ -180,22 +182,22 @@ function makeDirtable(obj, except = []) {
       "writable": false
     },
     "reset": {
-      "value": obj.reset,
+      "value": reset,
       "enumerable": false
     },
     "isDirty": {
-      "value": obj.isDirty,
+      "value": isDirty,
       "enumerable": false
     },
     "getAssignments": {
-      "value": obj.getAssignments,
+      "value": getAssignments,
       "enumerable": false
     }
   });
 
-  if (isArray) {
-    obj.getAssignments = getArrayAssignments;
-  }
+  obj.reset = reset;
+  obj.isDirty = isDirty;
+  obj.getAssignments = getAssignments;
 
   return new Proxy(obj, proxyOptions);
 
