@@ -147,7 +147,7 @@ describe("Dirtable", function() {
 
   });
 
-  it("should not have enumerables privates", function() {
+  it("should not have enumerable privates", function() {
     
     var dirtable = makeDirtable(getInspectionOrderMock());
 
