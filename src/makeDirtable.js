@@ -195,10 +195,6 @@ function makeDirtable(obj, except = []) {
     }
   });
 
-  obj.reset = reset;
-  obj.isDirty = isDirty;
-  obj.getAssignments = getAssignments;
-
   return new Proxy(obj, proxyOptions);
 
 }

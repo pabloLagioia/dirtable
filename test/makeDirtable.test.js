@@ -147,4 +147,18 @@ describe("Dirtable", function() {
 
   });
 
+  it("should not be enumeral", function() {
+    
+    var dirtable = makeDirtable(getInspectionOrderMock());
+
+    expect(dirtable._deletions.propertyIsEnumerable()).to.equal(false);
+    expect(dirtable._assignments.propertyIsEnumerable()).to.equal(false);
+    expect(dirtable.isDirtable.propertyIsEnumerable()).to.equal(false);
+    expect(dirtable.reset.propertyIsEnumerable()).to.equal(false);
+    expect(dirtable.isDirty.propertyIsEnumerable()).to.equal(false);
+    expect(dirtable.getAssignments.propertyIsEnumerable()).to.equal(false);
+
+
+  });
+
 });
