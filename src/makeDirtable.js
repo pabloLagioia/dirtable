@@ -55,27 +55,38 @@ function isDirty() {
   
 }
 
-function getDeletions() {
+function getObjectDeletions() {
+
+  const objectDeletions = [];
   
-  const objectDeletions = {};
-  
-  this._deletions.forEach(function(it) {
+  for (var j in this) {
 
-    if (it.value instanceof Dirtable) {
+    let it = this[j];
 
-      const deletions = it.value.getDeletions();
+    if (it && it.isDirtable && it.isDirty()) {
+      
+      let deletions = it.getDeletions();
 
-      for (var i in deletions) {
-        objectDeletions[it.property + "." + i] = deletions[i];
+      if (it instanceof Array) {
+        // deletions.forEach(deletion => { objectDeletions.push(j + "." + deletion); });
+        deletions.forEach(deletion => { 
+          if (typeof deletion === "object") {
+            objectDeletions.push({[j]: deletion}); 
+          } else {
+            objectDeletions.push(j + "." + deletion);
+          }
+        });
+      } else {
+        for (var i = 0; i < deletions.length; i++) {
+          objectDeletions.push(j + "." + deletions[i]);
+        }
       }
 
-    } else {
-      objectDeletions[it.property] = it.value;
     }
 
-  });
+  }
 
-  return objectDeletions;
+  return this._deletions.concat(objectDeletions);
   
 }
 
@@ -83,6 +94,10 @@ function getArrayAssignments() {
   return this._assignments.map(function(it) {
     return it.value;
   });
+}
+
+function getArrayDeletions() {
+  return this._deletions;
 }
 
 function getObjectAssignments() {
@@ -120,21 +135,33 @@ function getObjectAssignments() {
 }
 
 const proxyOptions = {
-  apply: function(target, thisArg, argumentsList) {
-    return thisArg[target].apply(this, argumentList);
-  },
   deleteProperty: function(target, property) {
-    target._deletions.push(property);
+
+    if (target.__splicing) {
+      return true;
+    }
+
+    if (target instanceof Array) {
+      target._deletions.push(target[property]);
+    } else {
+      target._deletions.push(property);
+    }
+
     return true;
+
   },
-  set: function(target, property, value, receiver) {      
+  set: function(target, property, value, receiver) {
+
     target[property] = value;
-    if (property !== "length") {
+
+    if (property !== "length" && !target.__splicing && property !== "__splicing") {
       target._assignments.push({
         "property": property, "value": value
       });
     }
+
     return true;
+
   }
 }
 
@@ -157,9 +184,22 @@ function makeDirtable(obj, except = []) {
   }
 
   var getAssignments = getObjectAssignments;
+  var getDeletions = getObjectDeletions;
   
   if (isArray) {
     getAssignments = getArrayAssignments;
+    getDeletions = getArrayDeletions;
+
+    obj._splice = obj.splice;
+    obj.splice = function() {
+      this.__splicing = true;
+      const splicedElements = this._splice.apply(this, Array.prototype.slice.call(arguments));
+      splicedElements.forEach(function(it) {
+        obj._deletions.push(it);
+      });
+      this.__splicing = false;
+    }
+
   }
 
   Object.defineProperties(obj, {
@@ -191,6 +231,10 @@ function makeDirtable(obj, except = []) {
     },
     "getAssignments": {
       "value": getAssignments,
+      "enumerable": false
+    },
+    "getDeletions": {
+      "value": getDeletions,
       "enumerable": false
     }
   });
