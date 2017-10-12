@@ -89,7 +89,7 @@ describe("Dirtable", function() {
     dirtable.addAttachment("/s3.amazon.com/apicture.jpeg", "a-picture.jpeg");
     dirtable.addAttachment("/s3.amazon.com/anotherpicture.jpeg", "another-picture.jpeg");
  
-    dirtable.reset();
+    dirtable.resetDirtable();
 
     const assignments = dirtable.getAssignments();
 
@@ -154,7 +154,7 @@ describe("Dirtable", function() {
     expect(dirtable._deletions.propertyIsEnumerable()).to.equal(false);
     expect(dirtable._assignments.propertyIsEnumerable()).to.equal(false);
     expect(dirtable.isDirtable.propertyIsEnumerable()).to.equal(false);
-    expect(dirtable.reset.propertyIsEnumerable()).to.equal(false);
+    expect(dirtable.resetDirtable.propertyIsEnumerable()).to.equal(false);
     expect(dirtable.isDirty.propertyIsEnumerable()).to.equal(false);
     expect(dirtable.getAssignments.propertyIsEnumerable()).to.equal(false);
     

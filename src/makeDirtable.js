@@ -16,14 +16,14 @@ function canBeDirtable(obj) {
 
 }
 
-function reset() {
+function resetDirtable() {
 
   for (var i in this) {
 
     var currentProp = this[i];
     
     if (currentProp && currentProp.isDirtable) {
-      currentProp.reset();
+      currentProp.resetDirtable();
     }
 
   }
@@ -221,8 +221,8 @@ function makeDirtable(obj, except = []) {
       "configurable": false,
       "writable": false
     },
-    "reset": {
-      "value": reset,
+    "resetDirtable": {
+      "value": resetDirtable,
       "enumerable": false
     },
     "isDirty": {
